@@ -148,9 +148,14 @@ async function startServer() {
     });
     app.use(vite.middlewares);
   } else {
-    app.use(express.static(path.join(__dirname, "dist")));
-    app.get("*", (req, res) => {
-      res.sendFile(path.join(__dirname, "dist", "index.html"));
+    const distPath = path.join(__dirname, "dist");
+    app.use("/heungdul-portfolio", express.static(distPath));
+    app.get("/heungdul-portfolio/*", (req, res) => {
+      res.sendFile(path.join(distPath, "index.html"));
+    });
+    // Redirect root to the new base path
+    app.get("/", (req, res) => {
+      res.redirect("/heungdul-portfolio/");
     });
   }
 

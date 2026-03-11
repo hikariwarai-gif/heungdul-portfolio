@@ -62,9 +62,15 @@ export default function App() {
     try {
       const res = await fetch('/api/portfolio');
       const data = await res.json();
-      setItems(data);
+      if (Array.isArray(data)) {
+        setItems(data);
+      } else {
+        console.error('API returned non-array data:', data);
+        setItems([]);
+      }
     } catch (err) {
       console.error('Failed to fetch items:', err);
+      setItems([]);
     } finally {
       setIsLoading(false);
     }
